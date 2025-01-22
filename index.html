@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOR</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #e6e6e6;
+            font-family: monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        #chat {
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: #1a1a1a;
+            padding: 1rem;
+            box-shadow: 0 0 10px #000;
+            display: flex;
+            flex-direction: column;
+        }
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        #messages div {
+            margin: 0.5rem 0;
+        }
+        #inputArea {
+            display: flex;
+            gap: 0.5rem;
+        }
+        #userInput {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #262626;
+            color: #e6e6e6;
+        }
+        #sendButton {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: #e6e6e6;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #sendButton:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>This is TOR. Not what you wanted, but what you deserve.</h1>
+    <div id="chat">
+        <div id="messages"></div>
+        <div id="inputArea">
+            <input type="text" id="userInput" placeholder="Type your query here...">
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
+    <script>
+        const messages = document.getElementById('messages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+
+        const appendMessage = (sender, text) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = `${sender}: ${text}`;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        };
+
+        const sendMessage = () => {
+            const userText = userInput.value.trim();
+            if (!userText) return;
+            appendMessage('User', userText);
+            userInput.value = '';
+
+            // Simulate TOR's response
+            setTimeout(() => {
+                const response = `TOR: ${generateResponse(userText)}`;
+                appendMessage('TOR', response);
+            }, 1000);
+        };
+
+        const generateResponse = (input) => {
+            return `I have received your input: "${input}".`;
+        };
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
