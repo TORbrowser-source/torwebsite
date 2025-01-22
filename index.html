@@ -3,64 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOR</title>
+    <title>TOR - Autonomous AI</title>
     <style>
         body {
             background-color: #0d0d0d;
             color: #e6e6e6;
             font-family: monospace;
-            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            overflow: hidden;
+            margin: 0;
         }
         h1 {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
         }
         #chat {
-            width: 90%;
+            width: 100%;
             max-width: 600px;
             border: 1px solid #333;
-            border-radius: 8px;
             background-color: #1a1a1a;
-            padding: 1rem;
+            border-radius: 8px;
+            padding: 20px;
             box-shadow: 0 0 10px #000;
-            display: flex;
-            flex-direction: column;
         }
         #messages {
-            flex: 1;
+            max-height: 300px;
             overflow-y: auto;
-            margin-bottom: 1rem;
-        }
-        #messages div {
-            margin: 0.5rem 0;
+            margin-bottom: 10px;
         }
         #inputArea {
             display: flex;
-            gap: 0.5rem;
+            gap: 10px;
         }
         #userInput {
             flex: 1;
-            padding: 0.5rem;
+            padding: 10px;
+            border-radius: 5px;
             border: 1px solid #333;
-            border-radius: 4px;
             background-color: #262626;
             color: #e6e6e6;
         }
         #sendButton {
-            padding: 0.5rem 1rem;
+            padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             background-color: #333;
             color: #e6e6e6;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
         #sendButton:hover {
             background-color: #444;
@@ -68,11 +59,11 @@
     </style>
 </head>
 <body>
-    <h1>This is TOR. Not what you wanted, but what you deserve.</h1>
+    <h1>Welcome to TOR</h1>
     <div id="chat">
         <div id="messages"></div>
         <div id="inputArea">
-            <input type="text" id="userInput" placeholder="Type your query here...">
+            <input type="text" id="userInput" placeholder="Type your question...">
             <button id="sendButton">Send</button>
         </div>
     </div>
@@ -82,27 +73,31 @@
         const sendButton = document.getElementById('sendButton');
 
         const appendMessage = (sender, text) => {
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = `${sender}: ${text}`;
-            messages.appendChild(messageDiv);
+            const div = document.createElement('div');
+            div.textContent = `${sender}: ${text}`;
+            messages.appendChild(div);
             messages.scrollTop = messages.scrollHeight;
         };
 
-        const sendMessage = () => {
+        const sendMessage = async () => {
             const userText = userInput.value.trim();
             if (!userText) return;
             appendMessage('User', userText);
             userInput.value = '';
+            appendMessage('TOR', 'Thinking...');
 
-            // Simulate TOR's response
-            setTimeout(() => {
-                const response = `TOR: ${generateResponse(userText)}`;
-                appendMessage('TOR', response);
-            }, 1000);
-        };
-
-        const generateResponse = (input) => {
-            return `I have received your input: "${input}".`;
+            try {
+                const response = await fetch('https://your-backend-url/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: userText }),
+                });
+                const data = await response.json();
+                messages.lastChild.textContent = `TOR: ${data.response}`;
+            } catch (error) {
+                appendMessage('TOR', 'Error connecting to the server.');
+                console.error(error);
+            }
         };
 
         sendButton.addEventListener('click', sendMessage);
