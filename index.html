@@ -87,7 +87,7 @@
             appendMessage('TOR', 'Thinking...');
 
             try {
-                const response = await fetch('https://your-backend-url/chat', {
+                const response = await fetch('https://torwebsite.vercel.app/, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: userText }),
